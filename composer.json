@@ -2,10 +2,12 @@
   "name": "leowebguy/simple-guzzle",
   "description": "Simple Guzzle plugin for Craft CMS",
   "keywords": [
-    "craftcms",
     "fetch",
     "guzzle",
-    "api"
+    "curl",
+    "api",
+    "post",
+    "get"
   ],
   "version": "1.0.0",
   "type": "craft-plugin",
