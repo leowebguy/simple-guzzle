@@ -1,0 +1,53 @@
+{
+  "name": "leowebguy/simple-guzzle",
+  "description": "Simple Guzzle plugin for Craft CMS",
+  "keywords": [
+    "craftcms",
+    "fetch",
+    "guzzle",
+    "api"
+  ],
+  "version": "1.0.0",
+  "type": "craft-plugin",
+  "license": "MIT",
+  "author": {
+    "name": "Leo",
+    "homepage": "https://github.com/leowebguy"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": "^8.0.2",
+    "craftcms/cms": "^4.0"
+  },
+  "require-dev": {
+    "craftcms/ecs": "dev-main",
+    "craftcms/phpstan": "dev-main",
+    "craftcms/rector": "dev-main"
+  },
+  "autoload": {
+    "psr-4": {
+      "leowebguy\\simpleguzzle\\": "src/"
+    }
+  },
+  "extra": {
+    "name": "Simple Guzzle",
+    "handle": "simple-guzzle",
+    "class": "leowebguy\\simpleguzzle\\Fetch"
+  },
+  "config": {
+    "platform": {
+      "php": "8.0.2"
+    },
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true,
+      "craftcms/plugin-installer": true
+    }
+  },
+  "scripts": {
+    "check-cs": "vendor/bin/ecs check src --ansi",
+    "fix-cs": "vendor/bin/ecs check src --ansi --fix",
+    "phpstan": "vendor/bin/phpstan analyse src",
+    "rector": "vendor/bin/rector process src --config vendor/craftcms/rector/sets/craft-cms-40.php"
+  }
+}
