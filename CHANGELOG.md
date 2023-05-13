@@ -1,4 +1,4 @@
-# Release Notes for Simple Fetch
+# Release Notes for Simple Guzzle
 
 All notable changes to this project will be documented in this file.
 

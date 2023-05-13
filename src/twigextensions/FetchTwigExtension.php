@@ -13,7 +13,7 @@ namespace leowebguy\simpleguzzle\twigextensions;
 use Craft;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
-use leowebguy\simpleguzzle\Fetch;
+use leowebguy\simpleguzzle\Plugin;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -42,7 +42,7 @@ class FetchTwigExtension extends AbstractExtension
         $cacheKey = md5(StringHelper::slugify($method . '-' . Json::encode($client) . '-' . $destination . '-' . Json::encode($options)));
 
         return Craft::$app->cache->getOrSet($cacheKey, function() use ($client, $method, $destination, $options) {
-            return Fetch::$plugin->guzzleService->callGuzzle($client, $method, $destination, $options);
+            return Plugin::$plugin->guzzleService->callGuzzle($client, $method, $destination, $options);
         }, $duration);
     }
 }

@@ -35,7 +35,7 @@
   "extra": {
     "name": "Simple Guzzle",
     "handle": "simple-guzzle",
-    "class": "leowebguy\\simpleguzzle\\Fetch"
+    "class": "leowebguy\\simpleguzzle\\Plugin"
   },
   "config": {
     "platform": {

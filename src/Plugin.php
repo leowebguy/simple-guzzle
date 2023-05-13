@@ -11,11 +11,11 @@
 namespace leowebguy\simpleguzzle;
 
 use Craft;
-use craft\base\Plugin;
+use craft\base\Plugin as BasePlugin;
 use leowebguy\simpleguzzle\services\FetchService;
 use leowebguy\simpleguzzle\twigextensions\FetchTwigExtension;
 
-class Fetch extends Plugin
+class Plugin extends BasePlugin
 {
     // Properties
     // =========================================================================
@@ -48,7 +48,7 @@ class Fetch extends Plugin
         Craft::$app->view->registerTwigExtension(new FetchTwigExtension());
 
         Craft::info(
-            'Simple Fetch plugin loaded',
+            'Simple Guzzle plugin loaded',
             __METHOD__
         );
     }
