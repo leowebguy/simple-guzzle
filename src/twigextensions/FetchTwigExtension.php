@@ -4,8 +4,7 @@
  *
  * @author     Leo Leoncio
  * @see        https://github.com/leowebguy
- * @copyright  Copyright (c) 2023, leowebguy
- * @license    MIT
+ * @copyright  Copyright (c) 2024, leowebguy
  */
 
 namespace leowebguy\simpleguzzle\twigextensions;
@@ -42,7 +41,7 @@ class FetchTwigExtension extends AbstractExtension
         $cacheKey = md5(StringHelper::slugify($method . '-' . Json::encode($client) . '-' . $destination . '-' . Json::encode($options)));
 
         return Craft::$app->cache->getOrSet($cacheKey, function() use ($client, $method, $destination, $options) {
-            return Plugin::$plugin->guzzleService->callGuzzle($client, $method, $destination, $options);
+            return Plugin::getInstance()->guzzleService->callGuzzle($client, $method, $destination, $options);
         }, $duration);
     }
 }

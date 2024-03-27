@@ -4,22 +4,18 @@
  *
  * @author     Leo Leoncio
  * @see        https://github.com/leowebguy
- * @copyright  Copyright (c) 2023, leowebguy
- * @license    MIT
+ * @copyright  Copyright (c) 2024, leowebguy
  */
 
 namespace leowebguy\simpleguzzle\services;
 
 use Craft;
-use GuzzleHttp\Exception\GuzzleException;
 use craft\base\Component;
 use craft\helpers\Json;
+use GuzzleHttp\Exception\GuzzleException;
 
 class FetchService extends Component
 {
-    // Public Methods
-    // =========================================================================
-
     /**
      * @param $client
      * @param $method
@@ -43,7 +39,6 @@ class FetchService extends Component
 
         if ($result->getStatusCode() === 200 &&
             Json::isJsonObject($result->getBody())) {
-
             return Json::decode($result->getBody());
         }
 

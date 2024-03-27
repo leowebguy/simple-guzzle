@@ -4,8 +4,7 @@
  *
  * @author     Leo Leoncio
  * @see        https://github.com/leowebguy
- * @copyright  Copyright (c) 2023, leowebguy
- * @license    MIT
+ * @copyright  Copyright (c) 2024, leowebguy
  */
 
 namespace leowebguy\simpleguzzle;
@@ -17,25 +16,13 @@ use leowebguy\simpleguzzle\twigextensions\FetchTwigExtension;
 
 class Plugin extends BasePlugin
 {
-    // Properties
-    // =========================================================================
-
-    public static mixed $plugin;
-
     public bool $hasCpSection = false;
 
     public bool $hasCpSettings = false;
 
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * @return void
-     */
     public function init(): void
     {
         parent::init();
-        self::$plugin = $this;
 
         if (!$this->isInstalled) {
             return;
@@ -45,7 +32,7 @@ class Plugin extends BasePlugin
             'guzzleService' => FetchService::class
         ]);
 
-        Craft::$app->view->registerTwigExtension(new FetchTwigExtension());
+        Craft::$app->view->registerTwigExtension(new FetchTwigExtension);
 
         Craft::info(
             'Simple Guzzle plugin loaded',
