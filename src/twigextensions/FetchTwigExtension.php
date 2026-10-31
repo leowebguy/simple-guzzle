@@ -1,10 +1,11 @@
 <?php
+
 /**
  * A simple way to call guzzle and cache data from APIs
  *
  * @author     Leo Leoncio
  * @see        https://github.com/leowebguy
- * @copyright  Copyright (c) 2024, leowebguy
+ * @copyright  Copyright (c) 2026, leowebguy
  */
 
 namespace leowebguy\simpleguzzle\twigextensions;
@@ -29,19 +30,33 @@ class FetchTwigExtension extends AbstractExtension
     }
 
     /**
-     * @param array $client
+     * @param array<string, mixed> $client
      * @param string $method
      * @param string $destination
-     * @param array $options
+     * @param array<string, mixed> $options
      * @param int|null $duration
-     * @return array|string
+     * @return array<mixed>|string
      */
-    public function guzzle(array $client, string $method, string $destination, array $options = [], int|null $duration = 0): array|string
+    public function guzzle(array $client, string $method, string $destination, array $options = [], ?int $duration = 0): array|string
     {
-        $cacheKey = md5(StringHelper::slugify($method . '-' . Json::encode($client) . '-' . $destination . '-' . Json::encode($options)));
+        $plugin = Plugin::getInstance();
+        if ($plugin === null) {
+            return [
+                'error' => true,
+                'reason' => 'Plugin instance not found',
+            ];
+        }
 
-        return Craft::$app->cache->getOrSet($cacheKey, function() use ($client, $method, $destination, $options) {
-            return Plugin::getInstance()->guzzleService->callGuzzle($client, $method, $destination, $options);
-        }, $duration);
+        $cache = Craft::$app->getCache();
+        if ($duration !== null && $duration > 0 && $cache !== null) {
+            $cacheKey = md5(StringHelper::slugify($method . '-' . Json::encode($client) . '-' . $destination . '-' . Json::encode($options)));
+
+            /** @var array<mixed>|string */
+            return $cache->getOrSet($cacheKey, function() use ($plugin, $client, $method, $destination, $options): array|string {
+                return $plugin->guzzleService->callGuzzle($client, $method, $destination, $options);
+            }, $duration);
+        }
+
+        return $plugin->guzzleService->callGuzzle($client, $method, $destination, $options);
     }
 }

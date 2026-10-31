@@ -1,51 +1,63 @@
-Simple Guzzle plugin for Craft CMS
-===
+# Simple Guzzle plugin for Craft CMS
 
-A simple way to call guzzle and cache data from API's
+A simple way to call Guzzle and cache data from APIs directly in your Craft CMS templates.
+
+## Requirements
+
+This plugin requires:
+- **Craft CMS**: `^5.0.0`
+- **PHP**: `^8.2 || ^8.3 || ^8.4 || ^8.5`
 
 ## Table of Contents
 
-1. [Install](#install)
-2. [Parameters](#parameters)
-3. [Usage](#usage)
-   1. [GET Json](#get-json)
-   2. [GET non-Json](#get-non-json)
+1. [Requirements](#requirements)
+2. [Install](#install)
+3. [Parameters](#parameters)
+4. [Usage](#usage)
+   1. [GET JSON](#get-json)
+   2. [GET Non-JSON](#get-non-json)
    3. [GET with Options](#get-with-options)
    4. [GET with Caching](#get-with-caching)
    5. [POST with Bearer Auth](#post-with-bearer-auth)
    6. [POST with Basic Auth](#post-with-basic-auth)
-4. [Twig Output](#twig-output)
+5. [Twig Output](#twig-output)
+6. [Error Handling](#error-handling)
 
 ## Install
 
+To install the plugin, run:
+
 ```bash
-composer require leowebguy/simple-guzzle && php craft plugin/install simple-guzzle
+composer require leowebguy/simple-guzzle -w
+php craft plugin/install simple-guzzle
 ```
 
 ## Parameters
 
-| Parameter     | Example value                                                            |
-|---------------|--------------------------------------------------------------------------|
-| `client`      | `{ base_uri: 'https://api.myapi.com/' }`                                 |
-| `method`      | `'GET'`                                                                  |
-| `destination` | `'v1/path'`                                                              |
-| `headers`     | `{ headers: { 'client_id': 'your-id', 'client_secret': 'your-secret' }}` |
-| `cache`       | `0`                                                                      |
+The `guzzle(...)` Twig function accepts the following parameters:
+
+| Parameter     | Type             | Default | Description / Example value                                              |
+|---------------|------------------|---------|--------------------------------------------------------------------------|
+| `client`      | `array`          | _required_ | Client options passed to Guzzle (e.g. `{ base_uri: 'https://api.myapi.com/' }`) |
+| `method`      | `string`         | _required_ | HTTP method (e.g. `'GET'`, `'POST'`, `'PUT'`, `'DELETE'`)                 |
+| `destination` | `string`         | _required_ | Request URI path / query (e.g. `'v1/path'`)                               |
+| `options`     | `array`          | `[]`    | Request options such as headers, body, or auth                           |
+| `duration`    | `int\|null`       | `0`     | Cache expiration in seconds (`0` or omitted = no caching)                |
 
 ## Usage
 
-### GET Json
+### GET JSON
 
 ```twig
 {% set request = guzzle({
-    base_uri : 'https://official-joke-api.appspot.com/'
+    base_uri: 'https://official-joke-api.appspot.com/'
 }, 'GET', 'random_joke') %}
 
 {% header "Content-Type: application/json; charset=utf-8" %}
 {{ request|json_encode|raw }}
 ```
 
-Result
+Result:
 
 ```json
 {
@@ -56,19 +68,19 @@ Result
 }
 ```
 
-### GET non-Json
+### GET Non-JSON
 
-_Plugin will automatically return string if result can't be parsed as Json_
+_The plugin automatically returns a string if the result cannot be parsed as JSON:_
 
 ```twig
 {% set request = guzzle({
-    base_uri : 'http://api.geonames.org/'
+    base_uri: 'http://api.geonames.org/'
 }, 'GET', 'srtm1?lat=50.01&lng=10.2&username=demo&style=full') %}
 
 {{ request }}
 ```
 
-Result
+Result:
 
 ```
 "208"
@@ -81,13 +93,13 @@ Result
     base_uri: 'https://currency-converter5.p.rapidapi.com/'
 }, 'GET', 'currency/convert?from=USD&to=CAD&amount=1', {
     headers: {
-        'X-RapidAPI-Key': 'you-api-key',
+        'X-RapidAPI-Key': 'your-api-key',
         'X-RapidAPI-Host': 'currency-converter5.p.rapidapi.com'
     }
 }) %}
 ```
 
-Result
+Result:
 
 ```json
 {
@@ -108,11 +120,11 @@ Result
 
 ### GET with Caching
 
-By default cache will be set to `0` meaning no caching unless you provide a cache duration in seconds. ex: `3600` = 1h , `86400` = 24h
+By default, cache is set to `0` (no caching) unless you provide a positive cache duration in seconds (e.g. `3600` = 1 hour, `86400` = 24 hours):
 
 ```twig
 {% set request = guzzle({
-    base_uri : 'https://official-joke-api.appspot.com/'
+    base_uri: 'https://official-joke-api.appspot.com/'
 }, 'GET', 'random_joke', {}, 3600) %}
 
 {% header "Content-Type: application/json; charset=utf-8" %}
@@ -136,7 +148,7 @@ By default cache will be set to `0` meaning no caching unless you provide a cach
 }) %}
 ```
 
-Result
+Result:
 
 ```json
 {
@@ -168,85 +180,46 @@ Result
               "data": {
                   "type": "test",
                   "attributes": {
-                      "url":      "https://craftcms.com"
+                      "url": "https://craftcms.com"
                   }
               }
            }'
 }) %}
 ```
 
-_Basic auth usually accepts username and password as parameters ex: `auth: ['username', 'password'],` in the example above the `token` is passed as username and pw is blank, per gtmetrix documentation._
-
-Result
-
-```json
-{
-    "data": {
-        "id": "tMsUIR0M",
-        "type": "test",
-        "attributes": {
-            ...
-        }
-    },
-    "meta": {
-        "credits_left": 49,
-        "credits_used": 1
-    },
-    "links": {
-        "self": "https://gtmetrix.com/api/2.0/tests/tMsUIR0M"
-    }
-}
-```
-
 ## Twig Output
 
-Making sure y'all understand how to output those results into your template.
+Outputting results into your template:
 
 ```twig
 {% set request = guzzle({
     base_uri: 'https://api.openai.com/v1/'
-}, 'POST', 'completions', {
+}, 'POST', 'chat/completions', {
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer my-bearer-token'
     },
     body: '{
-              "model": "text-davinci-003",
-              "prompt": "Hello, who are you?"
+              "model": "gpt-4o",
+              "messages": [{"role": "user", "content": "Hello, who are you?"}]
            }'
 }) %}
 
-Question: Hello, who are you?
-Answer: {{ request.choices[0].text }}
+{% if request.choices is defined %}
+    <p>{{ request.choices[0].message.content }}</p>
+{% endif %}
 ```
 
-Output
+## Error Handling
 
-```html
-Question: Hello, who are you?
-Answer: I'm Naveen. It's nice to meet you.
-```
+If an HTTP or Guzzle exception occurs during the request, an array with error details is returned:
 
-In the example above `request` outputs:
+```twig
+{% set response = guzzle({ base_uri: 'https://api.example.com/' }, 'GET', 'endpoint') %}
 
-```json
-{
-    "id": "cmpl-77BD86ixAzutOIdaOP6nNY98V5vSf",
-    "object": "text_completion",
-    "created": 1681945746,
-    "model": "text-davinci-003",
-    "choices": [
-        {
-            "text": "\n\nI'm Naveen. It's nice to meet you.",
-            "index": 0,
-            "logprobs": null,
-            "finish_reason": "stop"
-        }
-    ],
-    "usage": {
-        "prompt_tokens": 6,
-        "completion_tokens": 14,
-        "total_tokens": 20
-    }
-}
+{% if response.error is defined and response.error %}
+    <p class="error">Request failed: {{ response.reason }}</p>
+{% else %}
+    {# Render data #}
+{% endif %}
 ```

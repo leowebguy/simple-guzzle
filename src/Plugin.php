@@ -1,10 +1,11 @@
 <?php
+
 /**
  * A simple way to call guzzle and cache data from APIs
  *
  * @author     Leo Leoncio
  * @see        https://github.com/leowebguy
- * @copyright  Copyright (c) 2024, leowebguy
+ * @copyright  Copyright (c) 2026, leowebguy
  */
 
 namespace leowebguy\simpleguzzle;
@@ -14,6 +15,10 @@ use craft\base\Plugin as BasePlugin;
 use leowebguy\simpleguzzle\services\FetchService;
 use leowebguy\simpleguzzle\twigextensions\FetchTwigExtension;
 
+/**
+ * @property-read FetchService $guzzleService
+ * @method static Plugin|null getInstance()
+ */
 class Plugin extends BasePlugin
 {
     public bool $hasCpSection = false;
@@ -29,10 +34,10 @@ class Plugin extends BasePlugin
         }
 
         $this->setComponents([
-            'guzzleService' => FetchService::class
+            'guzzleService' => FetchService::class,
         ]);
 
-        Craft::$app->view->registerTwigExtension(new FetchTwigExtension);
+        Craft::$app->view->registerTwigExtension(new FetchTwigExtension());
 
         Craft::info(
             'Simple Guzzle plugin loaded',

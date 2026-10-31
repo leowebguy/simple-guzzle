@@ -9,18 +9,20 @@
     "post",
     "get"
   ],
-  "version": "2.0.0",
+  "version": "2.1.0",
   "type": "craft-plugin",
   "license": "proprietary",
-  "author": {
-    "name": "Leo",
-    "homepage": "https://github.com/leowebguy"
-  },
+  "authors": [
+    {
+      "name": "Leo",
+      "homepage": "https://github.com/leowebguy"
+    }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": "^8.2",
-    "craftcms/cms": "^5.0"
+    "php": "^8.2 || ^8.3 || ^8.4 || ^8.5",
+    "craftcms/cms": "^5.0.0"
   },
   "require-dev": {
     "craftcms/ecs": "dev-main",
@@ -36,6 +38,9 @@
   "extra": {
     "name": "Simple Guzzle",
     "handle": "simple-guzzle",
+    "developer": "Leo",
+    "developerUrl": "https://github.com/leowebguy",
+    "documentationUrl": "https://github.com/leowebguy/simple-guzzle/blob/main/README.md",
     "class": "leowebguy\\simpleguzzle\\Plugin"
   },
   "config": {
@@ -50,7 +55,7 @@
   "scripts": {
     "check-cs": "vendor/bin/ecs check src --ansi",
     "fix-cs": "vendor/bin/ecs check src --ansi --fix",
-    "phpstan": "vendor/bin/phpstan analyse src",
+    "phpstan": "vendor/bin/phpstan analyse",
     "rector": "vendor/bin/rector process src --config vendor/craftcms/rector/sets/craft-cms-50.php",
     "pint": "vendor/bin/pint -v src"
   }
