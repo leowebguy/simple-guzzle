@@ -37,7 +37,7 @@ class Plugin extends BasePlugin
             'guzzleService' => FetchService::class,
         ]);
 
-        Craft::$app->view->registerTwigExtension(new FetchTwigExtension());
+        Craft::$app->getView()->registerTwigExtension(new FetchTwigExtension());
 
         Craft::info(
             'Simple Guzzle plugin loaded',

@@ -56,7 +56,9 @@
     "check-cs": "vendor/bin/ecs check src --ansi",
     "fix-cs": "vendor/bin/ecs check src --ansi --fix",
     "phpstan": "vendor/bin/phpstan analyse",
+    "stan": "vendor/bin/phpstan analyse",
     "rector": "vendor/bin/rector process src --config vendor/craftcms/rector/sets/craft-cms-50.php",
-    "pint": "vendor/bin/pint -v src"
+    "pint": "vendor/bin/pint -v src",
+    "pint-test": "vendor/bin/pint --test -v src"
   }
 }
